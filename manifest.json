@@ -1,6 +1,6 @@
 {
     "name": "BUG_UIFix",
-    "version_number": "1.0.0",
+    "version_number": "1.0.1",
     "website_url": "https://github.com/darkenb/BUG_UIFix",
     "description": "UI layout fixes for DSPAllPlanetInfo (logistics window placement, drag, fold), Galactic Scale (planet panel spacing) and UXAssist (starmap filter drawn above the shield panel).",
     "dependencies": [

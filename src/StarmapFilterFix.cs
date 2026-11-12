@@ -25,6 +25,9 @@ namespace BUG_UIFix
             if (AccessTools.Field(filter, "_shieldSiblingIndex") != null) return "already contains this fix, skipped";
             AccessTools.Field(filter, "StarmapFilterToggler").ThrowIfMissing("StarmapFilterUI.StarmapFilterToggler");
             harmony.Patch(AccessTools.Method(filter, "InitStarmapButtons").ThrowIfMissing("StarmapFilterUI.InitStarmapButtons"), postfix: new HarmonyMethod(typeof(StarmapFilterFix), nameof(AfterInit)));
+            // The filter can stay open when the starmap closes: the shield panel goes back then, and behind again on the next open.
+            harmony.Patch(AccessTools.Method(typeof(UIStarmap), "_OnOpen").ThrowIfMissing("UIStarmap._OnOpen"), postfix: new HarmonyMethod(typeof(StarmapFilterFix), nameof(MapOpened)));
+            harmony.Patch(AccessTools.Method(typeof(UIStarmap), "_OnClose").ThrowIfMissing("UIStarmap._OnClose"), postfix: new HarmonyMethod(typeof(StarmapFilterFix), nameof(MapClosed)));
             return "starmap filter drawn above the planet shield panel";
         }
 
@@ -56,12 +59,17 @@ namespace BUG_UIFix
             catch (Exception error) { Plugin.Log.LogError("UXAssist starmap filter fix skipped: " + error); }
         }
 
-        private static void Toggled()
+        private static void Toggled() => Sync(true);  // the button is only reachable on the open starmap
+        private static void MapOpened() => Sync(true);
+        private static void MapClosed() => Sync(false);
+
+        private static void Sync(bool mapOpen)
         {
+            if (toggler == null || checkedProperty == null) return;
             try
             {
-                bool open = (bool)checkedProperty.GetValue(toggler, null);
-                if (backdrop != null) backdrop.SetActive(open);
+                bool filterOpen = (bool)checkedProperty.GetValue(toggler, null), open = filterOpen && mapOpen;
+                if (backdrop != null) backdrop.SetActive(filterOpen);
                 Transform inGame = UIRoot.instance.uiGame.transform;
                 Transform shield = inGame.Find("Planet Shield Details");
                 Transform starmap = toggler.transform;
