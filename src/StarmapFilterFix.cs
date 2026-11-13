@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 namespace BUG_UIFix
 {
-    // UXAssist's starmap filter (">>" / "X", top left) was drawn under the game's Planet Shield Details panel, which comes
-    // later in the "In Game" hierarchy; the planet list was unreadable. While the filter is open the shield panel is moved
-    // before the starmap (drawn behind it) and an opaque backdrop sits behind the list. Closing restores both.
+    // UXAssist's starmap filter (">>" / "X", top left) was drawn under other panels of the starmap (the game's Planet Shield
+    // Details, and blue frames of other mods); the planet list was unreadable. While the filter is open its panel gets a
+    // canvas sorted above every other canvas of the game UI, with an opaque backdrop behind the list. Closing restores it.
     internal static class StarmapFilterFix
     {
         public const string Guid = "org.soardev.uxassist";
@@ -16,7 +16,7 @@ namespace BUG_UIFix
         private static Component toggler;
         private static PropertyInfo checkedProperty;
         private static GameObject backdrop;
-        private static int shieldIndex = -1;
+        private static Canvas canvas;
 
         public static string Apply(Harmony harmony)
         {
@@ -28,7 +28,7 @@ namespace BUG_UIFix
             // The filter can stay open when the starmap closes: the shield panel goes back then, and behind again on the next open.
             harmony.Patch(AccessTools.Method(typeof(UIStarmap), "_OnOpen").ThrowIfMissing("UIStarmap._OnOpen"), postfix: new HarmonyMethod(typeof(StarmapFilterFix), nameof(MapOpened)));
             harmony.Patch(AccessTools.Method(typeof(UIStarmap), "_OnClose").ThrowIfMissing("UIStarmap._OnClose"), postfix: new HarmonyMethod(typeof(StarmapFilterFix), nameof(MapClosed)));
-            return "starmap filter drawn above the planet shield panel";
+            return "starmap filter drawn above the other starmap panels";
         }
 
         private static void AfterInit()
@@ -54,6 +54,11 @@ namespace BUG_UIFix
                 backdrop = rect.gameObject;
                 backdrop.SetActive(false);
 
+                // A canvas of its own sorts above panels that sit later in the hierarchy or have their own canvas; it needs its own raycaster.
+                GameObject panel = toggler.transform.parent.gameObject;
+                canvas = panel.GetComponent<Canvas>() ?? panel.AddComponent<Canvas>();
+                if (panel.GetComponent<GraphicRaycaster>() == null) panel.AddComponent<GraphicRaycaster>();
+
                 onChecked.AddEventHandler(toggler, (Action)Toggled);
             }
             catch (Exception error) { Plugin.Log.LogError("UXAssist starmap filter fix skipped: " + error); }
@@ -70,21 +75,17 @@ namespace BUG_UIFix
             {
                 bool filterOpen = (bool)checkedProperty.GetValue(toggler, null), open = filterOpen && mapOpen;
                 if (backdrop != null) backdrop.SetActive(filterOpen);
-                Transform inGame = UIRoot.instance.uiGame.transform;
-                Transform shield = inGame.Find("Planet Shield Details");
-                Transform starmap = toggler.transform;
-                while (starmap.parent != null && starmap.parent != inGame) starmap = starmap.parent;
-                if (shield == null || starmap.parent != inGame) return;
-                if (open && shieldIndex < 0 && shield.GetSiblingIndex() > starmap.GetSiblingIndex())
+                if (canvas == null) return;
+                if (open)
                 {
-                    shieldIndex = shield.GetSiblingIndex();
-                    shield.SetSiblingIndex(starmap.GetSiblingIndex());
+                    int top = 0;
+                    foreach (Canvas other in UIRoot.instance.uiGame.GetComponentsInChildren<Canvas>(true))
+                        if (other != canvas) top = Math.Max(top, other.sortingOrder);
+                    foreach (Canvas root in UIRoot.instance.uiGame.GetComponentsInParent<Canvas>(true)) top = Math.Max(top, root.sortingOrder);
+                    canvas.overrideSorting = true;
+                    canvas.sortingOrder = top + 1;
                 }
-                else if (!open && shieldIndex >= 0)
-                {
-                    shield.SetSiblingIndex(shieldIndex);
-                    shieldIndex = -1;
-                }
+                else canvas.overrideSorting = false;
             }
             catch (Exception error) { Plugin.Log.LogError("UXAssist starmap filter fix: " + error); }
         }
