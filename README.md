@@ -2,7 +2,7 @@
 
 Fixes layout and display problems in the UI of other mods. Each fix is a Harmony patch on that mod; nothing is replaced, and the original mods stay as they are on disk.
 
-Requires [BUG_ModsPatch](https://thunderstore.io/c/dyson-sphere-program/p/darkenb/BUG_ModsPatch/), which holds the logic and crash fixes for the same mods.
+Requires [BUG_ModsPatch](https://thunderstore.io/c/dyson-sphere-program/p/BUG/BUG_ModsPatch/), which holds the logic and crash fixes for the same mods.
 
 This mod only applies fixes. It adds no features of its own and contains no files of the mods it fixes. Each fix works as a patch on its own mod only, so you do not need all of those mods: the fixes for each installed mod are applied to that mod, the others are skipped.
 

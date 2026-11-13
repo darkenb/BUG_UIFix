@@ -5,6 +5,6 @@
     "description": "UI layout and display fixes for DSPAllPlanetInfo, Galactic Scale, UXAssist, PlanetFinder, Multifunction, LaserClearing, DSPBigInventory, UniverseGenTweaks and MechaDronesTweaks.",
     "dependencies": [
         "xiaoye97-BepInEx-5.4.17",
-        "darkenb-BUG_ModsPatch-1.0.0"
+        "BUG-BUG_ModsPatch-1.0.0"
     ]
 }
