@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.2
+
+- New game screen: the value boxes are small and sit at the right end of each slider; the number on the slider handle is shown again.
+
 ## 1.1.1
 
 - New game screen: the star count and UniverseGenTweaks slider values can be typed in, kept within the slider limits.

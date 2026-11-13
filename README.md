@@ -48,7 +48,7 @@ A large inventory with the delivery panel made the inventory, assembler and mine
 
 ## New game screen: type the values
 
-The number next to the star count slider (and next to UniverseGenTweaks' four sliders when it is installed) is a text box. Click it, type a value and press Enter: it is kept inside the slider's limits and applied like a drag. Dot and comma both work as the decimal sign.
+A small text box sits at the right end of the star count slider (and of UniverseGenTweaks' four sliders when it is installed). Click it, type a value and press Enter: it is kept inside the slider's limits and applied like a drag. Dot and comma both work as the decimal sign.
 
 ## UniverseGenTweaks: new game settings
 

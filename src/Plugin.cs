@@ -4,15 +4,15 @@ using BepInEx.Logging;
 using HarmonyLib;
 using System.Reflection;
 
-[assembly: AssemblyVersion("1.1.1.0")]
-[assembly: AssemblyFileVersion("1.1.1.0")]
+[assembly: AssemblyVersion("1.1.2.0")]
+[assembly: AssemblyFileVersion("1.1.2.0")]
 [assembly: AssemblyTitle("BUG_UIFix")]
 
 namespace BUG_UIFix
 {
     // UI fixes for other mods, applied with Harmony. Each fix runs only when its mod is loaded and does not already
     // contain the fix; a missing mod or a changed member only skips that fix (logged), the others still apply.
-    [BepInPlugin(Guid, "BUG_UIFix", "1.1.1")]
+    [BepInPlugin(Guid, "BUG_UIFix", "1.1.2")]
     [BepInDependency("bug.dsp.modspatch")]  // the logic half of several fixes here, and the BigInventory screen limit
     [BepInDependency(AllPlanetInfoFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(GalacticScaleFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace BUG_UIFix
 {
-    // New game screen: the number of the star count slider (and of UniverseGenTweaks' four sliders) becomes a text box.
+    // New game screen: a small text box at the right end of the star count slider (and of UniverseGenTweaks' four sliders).
     // A typed value is clamped to the slider's min-max and set on the slider, so the mods react as to a drag.
     // Vanilla game only; no other mod needed.
     public static class NewGameInputFix
@@ -41,26 +41,26 @@ namespace BUG_UIFix
         static void Add(UIGalaxySelect ui, Slider slider, Text shown, float scale)
         {
             if (shown == null || boxes.Exists(b => b.slider == slider)) return;
-            var go = UnityEngine.Object.Instantiate(ui.seedInput.gameObject, shown.transform.parent, false);
+            // A small box just right of the bar's end; the number on the slider handle stays as it was.
+            // The box takes its own presses (InputField handles pointer and drag), so the slider does not move.
+            var go = UnityEngine.Object.Instantiate(ui.seedInput.gameObject, slider.transform, false);
             go.name = "bug-value-input";
             var input = go.GetComponent<InputField>();
             input.onEndEdit = new InputField.EndEditEvent();  // drop the seed box's listeners
             input.onValueChanged = new InputField.OnChangeEvent();
             input.contentType = InputField.ContentType.Standard;
-            input.characterLimit = 8;
+            input.characterLimit = 6;
             input.textComponent.font = shown.font;
-            input.textComponent.fontSize = shown.fontSize;
-            input.textComponent.alignment = shown.alignment;
+            input.textComponent.fontSize = 13;
+            input.textComponent.alignment = TextAnchor.MiddleCenter;
             input.textComponent.enabled = true;
             if (go.GetComponent<Image>() is Image bg) bg.enabled = true;
-            // The box takes the place of the number; at least 60 wide for four digits.
-            RectTransform from = shown.rectTransform, to = (RectTransform)go.transform;
-            to.anchorMin = from.anchorMin; to.anchorMax = from.anchorMax; to.pivot = from.pivot;
-            to.anchoredPosition = from.anchoredPosition;
-            to.sizeDelta = new Vector2(Mathf.Max(from.rect.width, 60f), Mathf.Max(from.rect.height, 22f));
-            // Under the row, not the slider: a press on the box must not move the slider.
-            go.transform.SetParent(slider.transform.parent, true);
-            shown.enabled = false;  // the mods keep writing the number to it; Update copies it into the box
+            var rect = (RectTransform)go.transform;
+            rect.anchorMin = rect.anchorMax = new Vector2(1f, 0.5f);
+            rect.pivot = new Vector2(0f, 0.5f);
+            rect.anchoredPosition = new Vector2(8f, 0f);
+            rect.sizeDelta = new Vector2(46f, 20f);
+            rect.localScale = Vector3.one;
             var box = new Box { slider = slider, shown = shown, input = input, scale = scale };
             input.onEndEdit.AddListener(text => Commit(box, text));
             boxes.Add(box);
@@ -71,7 +71,6 @@ namespace BUG_UIFix
             foreach (var b in boxes)
             {
                 if (b.input == null) continue;
-                b.input.gameObject.SetActive(b.slider.gameObject.activeInHierarchy);
                 if (!b.input.isFocused && b.input.text != b.shown.text) b.input.text = b.shown.text;
             }
         }
