@@ -24,6 +24,8 @@ Galactic Scale makes room in the planet panel for its "Planetary Radius" row, bu
 
 Changing a setting while a star system was open on the new game screen made a new galaxy, but the system's planet and star panels stayed open over it. The screen now goes back to the galaxy view with the new galaxy.
 
+The star count slider jumped back to a lower number after it was released: Galactic Scale showed only the primary stars, while its binary companions count toward the star count. It now shows the star count of the galaxy, the number that was chosen.
+
 ## UXAssist: starmap filter
 
 The starmap filter (`>>` / `X`, top left) opened under other starmap panels (the game's Planet Shield panel, frames of other mods), so the planet type list was hard to read. While the filter is open it is now drawn above all of them and the list has a solid background. Closing the filter puts everything back.
@@ -43,6 +45,10 @@ After the UI is rebuilt (for example when you load another save), the laser togg
 ## DSPBigInventory: windows fit the screen
 
 A large inventory with the delivery panel made the inventory, assembler and miner windows larger than the screen. These windows are scaled down and moved so they always fit; the inventory itself is not changed. (The inventory size and save fixes for DSPBigInventory are in BUG_ModsPatch.)
+
+## New game screen: type the values
+
+The number next to the star count slider (and next to UniverseGenTweaks' four sliders when it is installed) is a text box. Click it, type a value and press Enter: it is kept inside the slider's limits and applied like a drag. Dot and comma both work as the decimal sign.
 
 ## UniverseGenTweaks: new game settings
 

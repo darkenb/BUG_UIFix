@@ -18,6 +18,8 @@ namespace BUG_UIFix
         {
             if (!Plugin.Loaded(Guid)) return "not loaded, nothing to do";
             harmony.Patch(AccessTools.Method(typeof(UIPlanetDetail), "SetResCount"), postfix: new HarmonyMethod(typeof(GalacticScaleFix), nameof(SetResCount)) { priority = Priority.Last });
+            // First: before GS's own postfix adds the slider listener back, so setting the value does not regenerate.
+            harmony.Patch(AccessTools.Method(typeof(UIGalaxySelect), "UpdateUIDisplay"), postfix: new HarmonyMethod(typeof(GalacticScaleFix), nameof(ShowRequestedStarCount)) { priority = Priority.First });
             // Our local Galactic Scale build already returns to the galaxy view itself.
             if (AccessTools.Method(AccessTools.TypeByName("GalacticScale.Modeler"), "CancelPendingScans") != null) return "planet panel layout fixed";
             Type display = AccessTools.TypeByName("GalacticScale.SystemDisplay").ThrowIfMissing("GalacticScale.SystemDisplay");
@@ -50,6 +52,17 @@ namespace BUG_UIFix
             UIRoot.instance.uiGame.planetDetail.gameObject.SetActive(false);
             UIRoot.instance.uiGame.starDetail.gameObject.SetActive(false);
             showStarCount.Invoke(null, null);
+        }
+
+        // GS sets the star count slider to the galaxy's primary stars after each preview, but its generator counts binary
+        // companions in the star count. A slider dropped at 64 jumped back to 64 minus the binaries (and the next drag
+        // started from there). The slider shows the generated star count, which is what was asked for, like the vanilla game.
+        private static void ShowRequestedStarCount(UIGalaxySelect __instance, GalaxyData galaxy)
+        {
+            if (galaxy?.stars == null || galaxy.starCount <= 0) return;
+            __instance.starCountSlider.onValueChanged.RemoveListener(__instance.OnStarCountSliderValueChange);
+            __instance.starCountSlider.value = galaxy.starCount;
+            __instance.starCountText.text = galaxy.starCount.ToString();
         }
 
         // The game re-applies resourcesTabHeight to the panel every frame (tabs, 0.10.35); GS's prefix never sets it, so the

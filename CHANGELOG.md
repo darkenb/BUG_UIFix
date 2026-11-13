@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1
+
+- New game screen: the star count and UniverseGenTweaks slider values can be typed in, kept within the slider limits.
+- Galactic Scale: the star count slider no longer jumps back to a lower number after a drag (it showed only primary stars).
+
 ## 1.1.0
 
 - Now requires BUG_ModsPatch.

@@ -1,6 +1,6 @@
 {
     "name": "BUG_UIFix",
-    "version_number": "1.1.0",
+    "version_number": "1.1.1",
     "website_url": "https://github.com/darkenb/BUG_UIFix",
     "description": "UI layout and display fixes for DSPAllPlanetInfo, Galactic Scale, UXAssist, PlanetFinder, Multifunction, LaserClearing, DSPBigInventory, UniverseGenTweaks and MechaDronesTweaks.",
     "dependencies": [
