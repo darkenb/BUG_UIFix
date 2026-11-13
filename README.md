@@ -6,6 +6,14 @@ Requires [BUG_ModsPatch](https://thunderstore.io/c/dyson-sphere-program/p/BUG/BU
 
 This mod only applies fixes. It adds no features of its own and contains no files of the mods it fixes. Each fix works as a patch on its own mod only, so you do not need all of those mods: the fixes for each installed mod are applied to that mod, the others are skipped.
 
+## Game: replicator count
+
+The number above the replicator's craft button counted batches, while a recipe can make several items per batch. A recipe that makes 8 per batch with materials for 285 batches showed 285; it now shows 2280, the items the queue would make, and a number longer than the game's ">999" widens its frame. This fix is for the game itself, so it applies with or without the other mods.
+
+## Game: tech tree names
+
+Zoomed out, a long tech name ran into the name of the next node on its row (They Come From Void's "Meta driver mounting point extension" upgrades). A name wider than the gap to its neighbour now gets a smaller font; shorter names keep theirs. It works for any mod's techs, and without them.
+
 ## DSPAllPlanetInfo: Interstellar Logistics window
 
 - **Window on top of the planet panel.** With the game's UI scale set to automatic, the window opened at the right edge, over the game's own planet details, and listed no stations. It now opens on screen and lists the stations again. Cause: the mod read a game setting that stays 0 while the UI scale is automatic.

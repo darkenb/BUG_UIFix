@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.3
+
+- Game replicator: the craftable count above the craft button counts items, not batches (a recipe that makes 8 per batch showed an eighth); a longer number widens its frame.
+- Game tech tree: a long tech name (They Come From Void's upgrades) gets a smaller font instead of running into the next node's name.
+
 ## 1.1.2
 
 - New game screen: the value boxes are small and sit at the right end of each slider; the number on the slider handle is shown again.
