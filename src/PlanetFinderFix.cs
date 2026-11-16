@@ -35,7 +35,7 @@ namespace BUG_UIFix
         public static string Apply(Harmony harmony)
         {
             if (!Plugin.Loaded(Guid)) return "not loaded, nothing to do";
-            if (AccessTools.TypeByName("PlanetFinderMod.ResourceList") != null) return "already contains this fix, skipped";
+            if (Plugin.FindType("PlanetFinderMod.ResourceList") != null) return "already contains this fix, skipped";
             selection = AccessTools.TypeByName("PlanetFinderMod.UIItemSelection").ThrowIfMissing("UIItemSelection");
             window = AccessTools.TypeByName("PlanetFinderMod.UIPlanetFinderWindow").ThrowIfMissing("UIPlanetFinderWindow");
             Type util = AccessTools.TypeByName("PlanetFinderMod.Util").ThrowIfMissing("Util");

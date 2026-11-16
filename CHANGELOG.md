@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.4
+
+- The "already fixed?" checks no longer write "Could not find" warnings to the log.
+
 ## 1.1.3
 
 - Game replicator: the craftable count above the craft button counts items, not batches (a recipe that makes 8 per batch showed an eighth); a longer number widens its frame.

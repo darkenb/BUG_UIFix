@@ -38,7 +38,7 @@ namespace BUG_UIFix
         public static string Apply(Harmony harmony, ConfigFile config)
         {
             if (!Plugin.Loaded(Guid)) return "not loaded, nothing to do";
-            if (AccessTools.TypeByName("DSPAllPlanetInfo.WindowDrag") != null) return "already contains this fix, skipped";
+            if (Plugin.FindType("DSPAllPlanetInfo.WindowDrag") != null) return "already contains this fix, skipped";
             ui = AccessTools.TypeByName("DSPAllPlanetInfo.UI").ThrowIfMissing("DSPAllPlanetInfo.UI");
             lineMax = AccessTools.Field(AccessTools.TypeByName("DSPAllPlanetInfo.InfoCreater"), "lineMax").ThrowIfMissing("InfoCreater.lineMax");
             foreach (string name in new[] { "infoWindow", "WindowTitle", "previousButton", "nextButton", "planetInfoButton", "ItemName", "ItemIcon", "ItemCount", "ItemLogic", "Line" })

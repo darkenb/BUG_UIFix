@@ -15,7 +15,7 @@ namespace BUG_UIFix
         public static string Apply(Harmony harmony)
         {
             if (!Plugin.Loaded(Guid)) return "not loaded, nothing to do";
-            if (AccessTools.TypeByName("Multifunction_mod.Patchs.PlanetReformCollectPatch") != null) return "already contains this fix, skipped";
+            if (Plugin.FindType("Multifunction_mod.Patchs.PlanetReformCollectPatch") != null) return "already contains this fix, skipped";
             Type draw = AccessTools.TypeByName("Multifunction_mod.GUIDraw").ThrowIfMissing("Multifunction_mod.GUIDraw");
             harmony.Patch(AccessTools.Method(draw, "PlayerPannel").ThrowIfMissing("GUIDraw.PlayerPannel"),
                 transpiler: new HarmonyMethod(typeof(MultifunctionFix), nameof(PackageButton)));
@@ -75,7 +75,7 @@ namespace BUG_UIFix
         {
             if (!Plugin.Loaded(Guid)) return "not loaded, nothing to do";
             Type ui = AccessTools.TypeByName("LaserClearing.UI_Patch").ThrowIfMissing("LaserClearing.UI_Patch");
-            if (AccessTools.Field(AccessTools.TypeByName("LaserClearing.LocalLaser_Patch"), "laserTargets") != null) return "already contains this fix, skipped";
+            if (Plugin.HasMember(AccessTools.TypeByName("LaserClearing.LocalLaser_Patch"), "laserTargets")) return "already contains this fix, skipped";
             button = AccessTools.Field(ui, "enableButton").ThrowIfMissing("UI_Patch.enableButton");
             status = AccessTools.Field(ui, "buttonStatus").ThrowIfMissing("UI_Patch.buttonStatus");
             harmony.Patch(AccessTools.Method(ui, "OnEnableChanged").ThrowIfMissing("UI_Patch.OnEnableChanged"),
@@ -104,7 +104,7 @@ namespace BUG_UIFix
         {
             if (!Plugin.Loaded(Guid)) return "not loaded, nothing to do";
             Type mod = AccessTools.TypeByName("MechaDronesTweaks.MechaDronesTweaks").ThrowIfMissing("MechaDronesTweaks.MechaDronesTweaks");
-            if (AccessTools.Method(mod, "GetDroneSpeed") != null) return "already contains this fix, skipped";
+            if (Plugin.HasMember(mod, "GetDroneSpeed")) return "already contains this fix, skipped";
             useFixed = AccessTools.Field(mod, "UseFixedSpeed").ThrowIfMissing("UseFixedSpeed");
             fixedSpeed = AccessTools.Field(mod, "FixedSpeed").ThrowIfMissing("FixedSpeed");
             multiplier = AccessTools.Field(mod, "SpeedMultiplier").ThrowIfMissing("SpeedMultiplier");

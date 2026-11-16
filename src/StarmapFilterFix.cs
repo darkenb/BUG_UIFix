@@ -22,7 +22,7 @@ namespace BUG_UIFix
         {
             if (!Plugin.Loaded(Guid)) return "not loaded, nothing to do";
             Type filter = AccessTools.TypeByName("UXAssist.Functions.UI.StarmapFilterUI") ?? throw new MissingMemberException("UXAssist.Functions.UI.StarmapFilterUI");
-            if (AccessTools.Field(filter, "_shieldSiblingIndex") != null) return "already contains this fix, skipped";
+            if (Plugin.HasMember(filter, "_shieldSiblingIndex")) return "already contains this fix, skipped";
             AccessTools.Field(filter, "StarmapFilterToggler").ThrowIfMissing("StarmapFilterUI.StarmapFilterToggler");
             harmony.Patch(AccessTools.Method(filter, "InitStarmapButtons").ThrowIfMissing("StarmapFilterUI.InitStarmapButtons"), postfix: new HarmonyMethod(typeof(StarmapFilterFix), nameof(AfterInit)));
             // The filter can stay open when the starmap closes: the shield panel goes back then, and behind again on the next open.

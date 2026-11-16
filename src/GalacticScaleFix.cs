@@ -21,7 +21,7 @@ namespace BUG_UIFix
             // First: before GS's own postfix adds the slider listener back, so setting the value does not regenerate.
             harmony.Patch(AccessTools.Method(typeof(UIGalaxySelect), "UpdateUIDisplay"), postfix: new HarmonyMethod(typeof(GalacticScaleFix), nameof(ShowRequestedStarCount)) { priority = Priority.First });
             // Our local Galactic Scale build already returns to the galaxy view itself.
-            if (AccessTools.Method(AccessTools.TypeByName("GalacticScale.Modeler"), "CancelPendingScans") != null) return "planet panel layout fixed";
+            if (Plugin.HasMember(Plugin.FindType("GalacticScale.Modeler"), "CancelPendingScans")) return "planet panel layout fixed";
             Type display = AccessTools.TypeByName("GalacticScale.SystemDisplay").ThrowIfMissing("GalacticScale.SystemDisplay");
             inGalaxySelect = AccessTools.Field(display, "inGalaxySelect").ThrowIfMissing("SystemDisplay.inGalaxySelect");
             showStarCount = AccessTools.Method(display, "ShowStarCount").ThrowIfMissing("SystemDisplay.ShowStarCount");

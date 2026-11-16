@@ -21,7 +21,7 @@ namespace BUG_UIFix
         public static string Apply(Harmony harmony)
         {
             if (!Plugin.Loaded(Guid)) return "not loaded, nothing to do";
-            if (AccessTools.Field(AccessTools.TypeByName("UniverseGenTweaks.MoreSettings"), "_settingRows") != null) return "already contains this fix, skipped";
+            if (Plugin.HasMember(AccessTools.TypeByName("UniverseGenTweaks.MoreSettings"), "_settingRows")) return "already contains this fix, skipped";
             harmony.Patch(AccessTools.Method(typeof(UIGalaxySelect), "_OnCreate"), prefix: new HarmonyMethod(typeof(UniverseGenTweaksFix), nameof(BeforeCreate)) { priority = Priority.First });
             harmony.Patch(AccessTools.Method(typeof(UIGalaxySelect), "_OnOpen"), postfix: new HarmonyMethod(typeof(UniverseGenTweaksFix), nameof(Opened)) { priority = Priority.Last });
             harmony.Patch(AccessTools.Method(typeof(UIGalaxySelect), "_OnUpdate"), postfix: new HarmonyMethod(typeof(UniverseGenTweaksFix), nameof(Update)) { priority = Priority.Last });

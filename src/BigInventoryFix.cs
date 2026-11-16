@@ -12,7 +12,7 @@ namespace BUG_UIFix
         public static string Apply(Harmony harmony)
         {
             if (!Plugin.Loaded(Guid)) return "not loaded, nothing to do";
-            if (AccessTools.TypeByName("DSPBigInventory.ViewportFit") != null) return "already contains this fix, skipped";
+            if (Plugin.FindType("DSPBigInventory.ViewportFit") != null) return "already contains this fix, skipped";
             harmony.Patch(AccessTools.Method(typeof(UIInventoryWindow), "_OnOpen"), postfix: new HarmonyMethod(typeof(BigInventoryFix), nameof(Inventory)));
             harmony.Patch(AccessTools.Method(typeof(UIAssemblerWindow), "_OnOpen"), postfix: new HarmonyMethod(typeof(BigInventoryFix), nameof(Assembler)));
             harmony.Patch(AccessTools.Method(typeof(UIMinerWindow), "_OnOpen"), postfix: new HarmonyMethod(typeof(BigInventoryFix), nameof(Miner)));

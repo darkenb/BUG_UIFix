@@ -4,15 +4,15 @@ using BepInEx.Logging;
 using HarmonyLib;
 using System.Reflection;
 
-[assembly: AssemblyVersion("1.1.3.0")]
-[assembly: AssemblyFileVersion("1.1.3.0")]
+[assembly: AssemblyVersion("1.1.4.0")]
+[assembly: AssemblyFileVersion("1.1.4.0")]
 [assembly: AssemblyTitle("BUG_UIFix")]
 
 namespace BUG_UIFix
 {
     // UI fixes for other mods (and one in the game itself: the replicator count), applied with Harmony. Each fix runs only when its mod is loaded and does not already
     // contain the fix; a missing mod or a changed member only skips that fix (logged), the others still apply.
-    [BepInPlugin(Guid, "BUG_UIFix", "1.1.3")]
+    [BepInPlugin(Guid, "BUG_UIFix", "1.1.4")]
     [BepInDependency("bug.dsp.modspatch")]  // the logic half of several fixes here, and the BigInventory screen limit
     [BepInDependency(AllPlanetInfoFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(GalacticScaleFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
@@ -54,5 +54,19 @@ namespace BUG_UIFix
         }
 
         internal static bool Loaded(string guid) => BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey(guid);
+
+        // "Already fixed?" lookups: unlike AccessTools these write no "Could not find" warning when the member is absent,
+        // which is the normal case.
+        internal static Type FindType(string name)
+        {
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                Type type = assembly.GetType(name, false);
+                if (type != null) return type;
+            }
+            return null;
+        }
+
+        internal static bool HasMember(Type type, string name) => type != null && type.GetMember(name, AccessTools.all).Length > 0;
     }
 }

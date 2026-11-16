@@ -25,7 +25,7 @@ namespace BUG_UIFix
         {
             if (!Plugin.Loaded(AllPlanetInfoFix.Guid)) return "not loaded, nothing to do";
             Type creater = AccessTools.TypeByName("DSPAllPlanetInfo.InfoCreater").ThrowIfMissing("DSPAllPlanetInfo.InfoCreater");
-            if (AccessTools.Field(creater, "startSlotNo") != null) return "already contains this fix, skipped";
+            if (Plugin.HasMember(creater, "startSlotNo")) return "already contains this fix, skipped";
             Type ui = AccessTools.TypeByName("DSPAllPlanetInfo.UI").ThrowIfMissing("DSPAllPlanetInfo.UI");
             FieldInfo F(Type t, string n) => AccessTools.Field(t, n).ThrowIfMissing(t.Name + "." + n);
             lineMax = F(creater, "lineMax"); pageNo = F(creater, "pageNo"); lastStationNo = F(creater, "lastStationNo"); startStationNo = F(creater, "startStationNo");

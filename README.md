@@ -76,7 +76,7 @@ The mecha window and the tech tree showed the game's drone speed, not the one Me
 ## Compatibility
 
 - Needs only BepInEx and BUG_ModsPatch. Install it next to any of these mods; fixes for mods you do not have are skipped.
-- Written against DSPAllPlanetInfo 1.1.14, Galactic Scale 2.80.7, UXAssist 1.6.3, PlanetFinder 1.3.2, Multifunction 4.0.8, LaserClearing 1.0.8, DSPBigInventory 1.0.8, UniverseGenTweaks 1.2.11 and MechaDronesTweaks 1.1.4. If a later version changes the parts a fix needs, or already contains the fix, that fix is skipped and the BepInEx log says so; the other fixes still apply.
+- Written against DSPAllPlanetInfo 1.1.14, Galactic Scale 2.80.8, UXAssist 1.6.3, PlanetFinder 1.3.2, Multifunction 4.0.8, LaserClearing 1.0.8, DSPBigInventory 1.0.8, UniverseGenTweaks 1.2.11 and MechaDronesTweaks 1.1.4. If a later version changes the parts a fix needs, or already contains the fix, that fix is skipped and the BepInEx log says so; the other fixes still apply.
 
 ## Licences
 
