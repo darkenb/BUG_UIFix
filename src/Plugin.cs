@@ -4,15 +4,15 @@ using BepInEx.Logging;
 using HarmonyLib;
 using System.Reflection;
 
-[assembly: AssemblyVersion("1.1.6.0")]
-[assembly: AssemblyFileVersion("1.1.6.0")]
+[assembly: AssemblyVersion("1.1.7.0")]
+[assembly: AssemblyFileVersion("1.1.7.0")]
 [assembly: AssemblyTitle("BUG_UIFix")]
 
 namespace BUG_UIFix
 {
     // UI fixes for other mods (and one in the game itself: the replicator count), applied with Harmony. Each fix runs only when its mod is loaded and does not already
     // contain the fix; a missing mod or a changed member only skips that fix (logged), the others still apply.
-    [BepInPlugin(Guid, "BUG_UIFix", "1.1.6")]
+    [BepInPlugin(Guid, "BUG_UIFix", "1.1.7")]
     [BepInDependency("bug.dsp.modspatch")]  // the logic half of several fixes here, and the BigInventory screen limit
     [BepInDependency(AllPlanetInfoFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(GalacticScaleFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
@@ -35,7 +35,7 @@ namespace BUG_UIFix
             // One switch per fix, in the config file (Gale's config editor shows them under "Fixes").
             ReplicatorCountFix.CountItems = Fix("ReplicatorCountItems", "Replicator: the count above the craft button is in items for a one-product recipe (285 batches of 8 show 2280), as the queue counts.");
             ReplicatorCountFix.NoLimit = Fix("ReplicatorCountNoLimit", "Replicator: the count above the craft button shows the real most instead of stopping at >999 (BUG_ModsPatch's MAX buttons add this number either way).");
-            ReplicatorCountFix.InventoryCounts = Fix("ReplicatorInventoryCounts", "Replicator: each input in the recipe tree shows how many the inventory holds, under its icon; red below one batch.");
+            ReplicatorCountFix.InventoryCounts = Fix("ReplicatorInventoryCounts", "Replicator: each input in the recipe tree shows how many of it you can get (inventory plus what chain production can make), under its icon; red below one batch.");
             if (ReplicatorCountFix.CountItems || ReplicatorCountFix.NoLimit || ReplicatorCountFix.InventoryCounts) Run("Replicator", () => ReplicatorCountFix.Apply(harmony));
             if (Fix("WindowOrder", "A clicked building's window opens in front of the inventory that opens with it.")) Run("Window order", () => WindowOrderFix.Apply(harmony));
             if (Fix("TipNames", "Item and recipe tips: a name too long for its line gets a smaller font instead of running over the line below.")) Run("Tip names", () => TipTitleFix.Apply(harmony));

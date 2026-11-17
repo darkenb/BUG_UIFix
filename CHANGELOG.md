@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.7
+
+- Replicator: the count under each input includes what chain production can make of it from the inventory; an input the replicator makes along the way showed a red 0.
+
 ## 1.1.6
 
 - Window order: a clicked building's window, the replicator (F) and the mecha panel (C) open in front of the inventory that opens with them; the inventory used to cover them. Clicking a window still brings it to the front.

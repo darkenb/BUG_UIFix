@@ -28,7 +28,7 @@ namespace BUG_UIFix
             // Same rule as the game's queue: items for a one-product recipe, batches when it makes several products.
             if (CountItems && recipe.ResultCounts != null && recipe.ResultCounts.Length == 1) text.text = Items(text.text, recipe.ResultCounts[0]);
             Widen(__instance, text);
-            if (InventoryCounts) Stock(__instance, recipe);
+            if (InventoryCounts) Stock(__instance, recipe, Forge(__instance));
         }
 
         // Switches in the config file (Plugin): each part of this fix can be turned off on its own.
@@ -41,11 +41,12 @@ namespace BUG_UIFix
         static readonly System.Collections.Generic.Dictionary<UIButton, Text> stocks = new System.Collections.Generic.Dictionary<UIButton, Text>();
         static readonly Color Enough = new Color(0.75f, 0.75f, 0.75f, 0.9f), Short = new Color(1f, 0.4f, 0.35f, 0.95f);
 
-        static void Stock(UIReplicatorWindow window, RecipeProto recipe)
+        static void Stock(UIReplicatorWindow window, RecipeProto recipe, MechaForge forge)
         {
             var buttons = Inputs(window);
             var package = GameMain.mainPlayer?.package;
             if (buttons == null || package == null || recipe.Items == null) return;
+            if (recipe.ID != stockRecipe || Time.frameCount - stockFrame >= 15) { chained.Clear(); stockRecipe = recipe.ID; stockFrame = Time.frameCount; }
             for (int i = 0; i < buttons.Count; i++)
             {
                 var button = buttons[i];
@@ -55,10 +56,30 @@ namespace BUG_UIFix
                 bool shown = i < recipe.Items.Length && need.enabled;
                 if (have.gameObject.activeSelf != shown) have.gameObject.SetActive(shown);
                 if (!shown) continue;
-                int count = package.GetItemCount(recipe.Items[i]);
+                int item = recipe.Items[i];
+                if (!chained.TryGetValue(item, out int count)) chained[item] = count = Obtainable(forge, package, item);
                 have.text = count.ToString("#,0");
                 have.color = count >= recipe.ItemCounts[i] ? Enough : Short;
             }
+        }
+
+        // The queue makes a missing input from its handcraft recipe (chain production), so an input counts what the inventory
+        // holds, the queue's leftovers and what that chain can make from the inventory: 0 coal dust with 2 craftable shows 2.
+        static readonly System.Collections.Generic.Dictionary<int, int> chained = new System.Collections.Generic.Dictionary<int, int>();
+        static int stockRecipe, stockFrame = int.MinValue;
+        static int Obtainable(MechaForge forge, StorageComponent package, int item)
+        {
+            long have = package.GetItemCount(item) + (forge?.extraItems?.GetCount(item) ?? 0);
+            var proto = LDB.items.Select(item);
+            var craft = proto?.handcraft;
+            if (forge != null && craft != null && GameMain.history != null && GameMain.history.RecipeUnlocked(craft.ID))
+            {
+                var marks = new System.Collections.Generic.HashSet<int>(forge.bottleneckItems);  // the trials add shortage marks
+                have += (long)System.Math.Min(forge.PredictTaskCount(craft.ID, MostBatches - 1), MostBatches) * proto.handcraftProductCount;
+                forge.bottleneckItems.Clear();
+                forge.bottleneckItems.UnionWith(marks);
+            }
+            return (int)System.Math.Min(have, int.MaxValue);
         }
 
         // A copy of the batch count, centred under the input's icon: clear of that count (bottom right of the icon) and of
