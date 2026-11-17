@@ -16,15 +16,88 @@ namespace BUG_UIFix
         }
 
         static readonly AccessTools.FieldRef<UIReplicatorWindow, RecipeProto> Selected = AccessTools.FieldRefAccess<UIReplicatorWindow, RecipeProto>("selectedRecipe");
+        static readonly AccessTools.FieldRef<UIReplicatorWindow, MechaForge> Forge = AccessTools.FieldRefAccess<UIReplicatorWindow, MechaForge>("mechaForge");
 
         // The game writes the text every update, so scaling it here never scales twice.
         static void Postfix(UIReplicatorWindow __instance)
         {
             var recipe = Selected(__instance);
             var text = __instance.currPredictCountText;
-            if (recipe?.ResultCounts == null || recipe.ResultCounts.Length == 0 || text == null) return;
-            text.text = Items(text.text, recipe.ResultCounts[0]);
+            if (recipe == null || text == null) return;
+            if (text.text.StartsWith(">")) text.text = Most(Forge(__instance), recipe.ID);
+            // Same rule as the game's queue: items for a one-product recipe, batches when it makes several products.
+            if (recipe.ResultCounts != null && recipe.ResultCounts.Length == 1) text.text = Items(text.text, recipe.ResultCounts[0]);
             Widen(__instance, text);
+            Stock(__instance, recipe);
+        }
+
+        // Each input in the recipe tree shows what one batch takes (135); how many the inventory holds was nowhere, so
+        // "148 craftable" could not be checked. The inventory count is written under each input, red below one batch.
+        static readonly AccessTools.FieldRef<UIReplicatorWindow, System.Collections.Generic.List<UIButton>> Inputs =
+            AccessTools.FieldRefAccess<UIReplicatorWindow, System.Collections.Generic.List<UIButton>>("treeDownList");
+        static readonly System.Collections.Generic.Dictionary<UIButton, Text> stocks = new System.Collections.Generic.Dictionary<UIButton, Text>();
+        static readonly Color Enough = new Color(0.75f, 0.75f, 0.75f, 0.9f), Short = new Color(1f, 0.4f, 0.35f, 0.95f);
+
+        static void Stock(UIReplicatorWindow window, RecipeProto recipe)
+        {
+            var buttons = Inputs(window);
+            var package = GameMain.mainPlayer?.package;
+            if (buttons == null || package == null || recipe.Items == null) return;
+            for (int i = 0; i < buttons.Count; i++)
+            {
+                var button = buttons[i];
+                if (button == null || !button.gameObject.activeSelf || button.transitions == null || button.transitions.Length < 3) continue;
+                if (!(button.transitions[2].target is Text need)) continue;
+                if (!stocks.TryGetValue(button, out var have) || have == null) stocks[button] = have = NewStock(need, button);
+                bool shown = i < recipe.Items.Length && need.enabled;
+                if (have.gameObject.activeSelf != shown) have.gameObject.SetActive(shown);
+                if (!shown) continue;
+                int count = package.GetItemCount(recipe.Items[i]);
+                have.text = count.ToString("#,0");
+                have.color = count >= recipe.ItemCounts[i] ? Enough : Short;
+            }
+        }
+
+        // A copy of the batch count, centred under the input's icon: clear of that count (bottom right of the icon) and of
+        // the row of items made from this recipe's product (above the recipe).
+        const string StockName = "bug-inventory-count";
+        static Text NewStock(Text need, UIButton button)
+        {
+            // The game makes further input buttons by copying the first one, ours included: reuse that copy, not a second text.
+            var copied = button.transform.Find(StockName)?.GetComponent<Text>();
+            if (copied != null) return copied;
+            var text = Object.Instantiate(need, button.transform);
+            text.name = StockName;
+            text.material = null;  // the copied value material makes bright text glow
+            text.raycastTarget = false;
+            text.alignment = TextAnchor.UpperCenter;
+            text.horizontalOverflow = HorizontalWrapMode.Overflow;
+            text.verticalOverflow = VerticalWrapMode.Overflow;
+            var rect = text.rectTransform;
+            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0f);
+            rect.pivot = new Vector2(0.5f, 1f);
+            rect.anchoredPosition = new Vector2(0f, 1f);  // midway between the icon and the window's bottom edge (seen in game)
+            return text;
+        }
+
+        // The game stops counting at ">999" batches; the real most is shown, up to MostBatches. BUG_ModsPatch makes
+        // ReplicatorPlus's MAX buttons add this same number (it used to add 1000).
+        public const int MostBatches = 99999;
+        static int cachedRecipe, cachedFrame = int.MinValue;
+        static string cached;
+        static string Most(MechaForge forge, int recipeId)
+        {
+            // Up to ~34 trial plans: a few times a second is enough for a number the eye reads.
+            if (recipeId != cachedRecipe || Time.frameCount - cachedFrame >= 15)
+            {
+                var marks = new System.Collections.Generic.HashSet<int>(forge.bottleneckItems);  // the trials add shortage marks
+                cached = System.Math.Min(forge.PredictTaskCount(recipeId, MostBatches - 1), MostBatches).ToString();
+                forge.bottleneckItems.Clear();
+                forge.bottleneckItems.UnionWith(marks);
+                cachedRecipe = recipeId;
+                cachedFrame = Time.frameCount;
+            }
+            return cached;
         }
 
         // The frame is sized for the game's longest count, ">999"; a longer number widens it, centred, instead of spilling out.

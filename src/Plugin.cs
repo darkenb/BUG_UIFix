@@ -4,15 +4,15 @@ using BepInEx.Logging;
 using HarmonyLib;
 using System.Reflection;
 
-[assembly: AssemblyVersion("1.1.4.0")]
-[assembly: AssemblyFileVersion("1.1.4.0")]
+[assembly: AssemblyVersion("1.1.5.0")]
+[assembly: AssemblyFileVersion("1.1.5.0")]
 [assembly: AssemblyTitle("BUG_UIFix")]
 
 namespace BUG_UIFix
 {
     // UI fixes for other mods (and one in the game itself: the replicator count), applied with Harmony. Each fix runs only when its mod is loaded and does not already
     // contain the fix; a missing mod or a changed member only skips that fix (logged), the others still apply.
-    [BepInPlugin(Guid, "BUG_UIFix", "1.1.4")]
+    [BepInPlugin(Guid, "BUG_UIFix", "1.1.5")]
     [BepInDependency("bug.dsp.modspatch")]  // the logic half of several fixes here, and the BigInventory screen limit
     [BepInDependency(AllPlanetInfoFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(GalacticScaleFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
@@ -45,6 +45,7 @@ namespace BUG_UIFix
             Run("New game screen", () => NewGameInputFix.Apply(harmony));
             Run("Replicator", () => ReplicatorCountFix.Apply(harmony));
             Run("Tech tree names", () => TechTitleFix.Apply(harmony));
+            Run("Tip names", () => TipTitleFix.Apply(harmony));
         }
 
         private static void Run(string mod, Func<string> apply)

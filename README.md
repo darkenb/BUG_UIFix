@@ -1,14 +1,18 @@
 # BUG UI Fix
 
-Fixes layout and display problems in the UI of other mods. Each fix is a Harmony patch on that mod; nothing is replaced, and the original mods stay as they are on disk.
+Fixes layout and display problems in the game's own UI (replicator, item tips, tech tree) and in the UI of other mods. Each fix is a Harmony patch; nothing is replaced, and the original mods stay as they are on disk.
 
 Requires [BUG_ModsPatch](https://thunderstore.io/c/dyson-sphere-program/p/BUG/BUG_ModsPatch/), which holds the logic and crash fixes for the same mods.
 
-This mod only applies fixes. It adds no features of its own and contains no files of the mods it fixes. Each fix works as a patch on its own mod only, so you do not need all of those mods: the fixes for each installed mod are applied to that mod, the others are skipped.
+This mod only fixes and clarifies what is shown; it changes no gameplay and contains no files of the mods it fixes. Each fix works as a patch on its own mod only, so you do not need all of those mods: the fixes for each installed mod are applied to that mod, the others are skipped.
 
 ## Game: replicator count
 
-The number above the replicator's craft button counted batches, while a recipe can make several items per batch. A recipe that makes 8 per batch with materials for 285 batches showed 285; it now shows 2280, the items the queue would make, and a number longer than the game's ">999" widens its frame. This fix is for the game itself, so it applies with or without the other mods.
+The number above the replicator's craft button counted batches, while a recipe can make several items per batch. A recipe that makes 8 per batch with materials for 285 batches showed 285; it now shows 2280, the items the queue would make, and a number longer than the game's ">999" widens its frame. The game stopped counting at ">999"; the real most is shown now, up to 99999 batches. A recipe with several products shows batches, as the queue does. Each input in the recipe tree also shows how many the inventory holds, under its icon (red when it is less than one batch), so the count can be checked: 20,000 held at 135 per batch is 148. This fix is for the game itself, so it applies with or without the other mods.
+
+## Game: tip names
+
+A long item or recipe name (Ore Enrichment's recycling recipes) wrapped onto a second line, over the line below it. A name too long for its line now gets a smaller font; shorter names keep theirs.
 
 ## Game: tech tree names
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.5
+
+- Replicator: for a recipe with several products the count above the craft button is batches again, as in the queue. It was multiplied by the first product only (for example ">2997" for 999 batches of 3 + 2).
+- Replicator: the count no longer stops at ">999"; it shows the real most, up to 99999 batches, the number the MAX buttons of DSPReplicatorPlus now add (with BUG_ModsPatch 1.0.3).
+- Replicator: each input in the recipe tree shows how many the inventory holds, under its icon; red when it is less than one batch.
+- Item and recipe tips: a name too long for its line gets a smaller font instead of running over the line below.
+
 ## 1.1.4
 
 - The "already fixed?" checks no longer write "Could not find" warnings to the log.
