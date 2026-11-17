@@ -2,7 +2,8 @@
 
 ## 1.1.6
 
-- Window order: the replicator (F) and mecha panel (C) also open in front of the inventory that opens with them.
+- Window order: a clicked building's window, the replicator (F) and the mecha panel (C) open in front of the inventory that opens with them; the inventory used to cover them. Clicking a window still brings it to the front.
+- Every fix can be turned off on its own: section `Fixes` of the config file (Gale's config editor), all on by default.
 
 ## 1.1.5
 
@@ -10,8 +11,6 @@
 - Replicator: the count no longer stops at ">999"; it shows the real most, up to 99999 batches, the number the MAX buttons of DSPReplicatorPlus now add (with BUG_ModsPatch 1.0.3).
 - Replicator: each input in the recipe tree shows how many the inventory holds, under its icon; red when it is less than one batch.
 - Item and recipe tips: a name too long for its line gets a smaller font instead of running over the line below.
-- Clicked buildings: their window stays in front of the inventory that opens with it; the inventory used to cover it.
-- Every fix can be turned off on its own: section `Fixes` of the config file (Gale's config editor), all on by default.
 
 ## 1.1.4
 
