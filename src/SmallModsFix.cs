@@ -43,21 +43,32 @@ namespace BUG_UIFix
 
         // DSPBigInventory's screen limit, looked up by name (false without that mod): our local builds have it themselves,
         // the Thunderstore release gets it from BUG-ModsPatch (only while that module is active).
+        // Looked up once: this runs on every GUI event of the panel, and a type not found makes HarmonyX scan every loaded
+        // type and log a warning (the panel dropped to a few frames per second with the Thunderstore DSPBigInventory).
+        static bool looked;
+        static MethodInfo maxColumns, maxRows;
+        static FieldInfo active;
+
         static bool ScreenLimit(string name, int argument, out int limit)
         {
             limit = int.MaxValue;
             try
             {
-                bool withColumns = name == "MaxRowsNow";
-                Type type = AccessTools.TypeByName("DSPBigInventory.ScreenLimits");
-                if (type == null)
+                if (!looked)
                 {
-                    type = AccessTools.TypeByName("ModsPatch.BigInventory.ScreenLimits");
-                    if (type == null || !(bool)AccessTools.Field(type, "Active").GetValue(null)) return false;
+                    looked = true;
+                    Type type = AccessTools.TypeByName("DSPBigInventory.ScreenLimits");
+                    if (type == null)
+                    {
+                        type = AccessTools.TypeByName("ModsPatch.BigInventory.ScreenLimits");
+                        active = type == null ? null : AccessTools.Field(type, "Active");
+                        if (active == null) return false;
+                    }
+                    maxColumns = type.GetMethod("MaxColumnsNow", Type.EmptyTypes);
+                    maxRows = type.GetMethod("MaxRowsNow", new[] { typeof(int) });
                 }
-                MethodInfo method = type.GetMethod(name, withColumns ? new[] { typeof(int) } : Type.EmptyTypes);
-                if (method == null) return false;
-                limit = (int)method.Invoke(null, withColumns ? new object[] { argument } : null);
+                if (maxColumns == null || maxRows == null || (active != null && !(bool)active.GetValue(null))) return false;
+                limit = (int)(name == "MaxRowsNow" ? maxRows.Invoke(null, new object[] { argument }) : maxColumns.Invoke(null, null));
                 return true;
             }
             catch (Exception) { return false; }

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.8
+
+- Multifunction: the frame rate no longer drops while its Player panel is open. The inventory button looked up DSPBigInventory on every frame, which is slow when that mod is not a local build.
+
 ## 1.1.7
 
 - Replicator: the count under each input includes what chain production can make of it from the inventory; an input the replicator makes along the way showed a red 0.
