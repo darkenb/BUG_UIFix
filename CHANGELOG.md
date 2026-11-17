@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.6
+
+- Window order: the replicator (F) and mecha panel (C) also open in front of the inventory that opens with them.
+
 ## 1.1.5
 
 - Replicator: for a recipe with several products the count above the craft button is batches again, as in the queue. It was multiplied by the first product only (for example ">2997" for 999 batches of 3 + 2).

@@ -16,11 +16,11 @@ namespace BUG_UIFix
             return "a clicked building's window stays in front of the inventory";
         }
 
-        // The windows the game opens for a clicked object (UIGame.ShutAllFunctionWindow, without the mecha, replicator,
-        // statistics, control panel and blueprint windows, which are not opened by a click).
+        // The windows the game opens with the inventory: those of a clicked object (UIGame.ShutAllFunctionWindow) and the
+        // replicator (F) and mecha (C) windows. Statistics, control panel and blueprint windows open without it.
         static ManualBehaviour[] Windows(UIGame g) => new ManualBehaviour[]
         {
-            g.storageWindow, g.tankWindow, g.minerWindow, g.assemblerWindow, g.fractionatorWindow, g.ejectorWindow, g.siloWindow,
+            g.replicator, g.mechaWindow, g.storageWindow, g.tankWindow, g.minerWindow, g.assemblerWindow, g.fractionatorWindow, g.ejectorWindow, g.siloWindow,
             g.labWindow, g.markerWindow, g.inserterWindow, g.splitterWindow, g.beltWindow, g.accumulatorWindow, g.nodeWindow,
             g.generatorWindow, g.exchangerWindow, g.stationWindow, g.dispenserWindow, g.monitorWindow, g.spraycoaterWindow,
             g.turretWindow, g.fieldGeneratorWindow, g.battleBaseWindow, g.communicatorWindow,

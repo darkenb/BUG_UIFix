@@ -12,7 +12,7 @@ The number above the replicator's craft button counted batches, while a recipe c
 
 ## Game: window order
 
-Clicking a building, belt, sorter, station or other object opens its window together with the inventory, and the inventory was drawn on top of it (with a large inventory it covered the clicked window). The clicked object's window now stays in front; the inventory stays open behind it.
+Clicking a building, belt, sorter, station or other object opens its window together with the inventory, and the inventory was drawn on top of it (with a large inventory it covered the clicked window). The same happened with the replicator (F) and the mecha panel (C). These windows now open in front; the inventory stays open behind them, and clicking a window still brings it to the front.
 
 ## Game: tip names
 
@@ -85,7 +85,7 @@ Section `Fixes`: one switch per fix, all on by default. Turn one off to keep tha
 | `ReplicatorCountItems` | Replicator count in items for one-product recipes |
 | `ReplicatorCountNoLimit` | Replicator count without the >999 limit |
 | `ReplicatorInventoryCounts` | Inventory counts under the recipe inputs |
-| `WindowOrder` | Clicked building's window in front of the inventory |
+| `WindowOrder` | Building, replicator and mecha windows open in front of the inventory |
 | `TipNames` | Long tip names fit their line |
 | `TechTreeNames` | Long tech names fit the tree |
 | `NewGameTypedValues` | Typed values on the new game screen |
