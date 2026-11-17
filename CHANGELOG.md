@@ -7,6 +7,7 @@
 - Replicator: each input in the recipe tree shows how many the inventory holds, under its icon; red when it is less than one batch.
 - Item and recipe tips: a name too long for its line gets a smaller font instead of running over the line below.
 - Clicked buildings: their window stays in front of the inventory that opens with it; the inventory used to cover it.
+- Every fix can be turned off on its own: section `Fixes` of the config file (Gale's config editor), all on by default.
 
 ## 1.1.4
 

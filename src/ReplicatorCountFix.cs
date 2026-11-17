@@ -24,12 +24,15 @@ namespace BUG_UIFix
             var recipe = Selected(__instance);
             var text = __instance.currPredictCountText;
             if (recipe == null || text == null) return;
-            if (text.text.StartsWith(">")) text.text = Most(Forge(__instance), recipe.ID);
+            if (NoLimit && text.text.StartsWith(">")) text.text = Most(Forge(__instance), recipe.ID);
             // Same rule as the game's queue: items for a one-product recipe, batches when it makes several products.
-            if (recipe.ResultCounts != null && recipe.ResultCounts.Length == 1) text.text = Items(text.text, recipe.ResultCounts[0]);
+            if (CountItems && recipe.ResultCounts != null && recipe.ResultCounts.Length == 1) text.text = Items(text.text, recipe.ResultCounts[0]);
             Widen(__instance, text);
-            Stock(__instance, recipe);
+            if (InventoryCounts) Stock(__instance, recipe);
         }
+
+        // Switches in the config file (Plugin): each part of this fix can be turned off on its own.
+        public static bool CountItems = true, NoLimit = true, InventoryCounts = true;
 
         // Each input in the recipe tree shows what one batch takes (135); how many the inventory holds was nowhere, so
         // "148 craftable" could not be checked. The inventory count is written under each input, red below one batch.

@@ -76,7 +76,30 @@ The mecha window and the tech tree showed the game's drone speed, not the one Me
 
 ## Settings
 
-`BepInEx/config/bug.dsp.uifix.cfg`, section `DSPAllPlanetInfo`:
+`BepInEx/config/bug.dsp.uifix.cfg`, also shown in Gale's and r2modman's config editor. The file is written the first time the game starts with this version.
+
+Section `Fixes`: one switch per fix, all on by default. Turn one off to keep that part of the game or mod as it was; a change takes effect after restarting the game.
+
+| Switch | Fix |
+|---|---|
+| `ReplicatorCountItems` | Replicator count in items for one-product recipes |
+| `ReplicatorCountNoLimit` | Replicator count without the >999 limit |
+| `ReplicatorInventoryCounts` | Inventory counts under the recipe inputs |
+| `WindowOrder` | Clicked building's window in front of the inventory |
+| `TipNames` | Long tip names fit their line |
+| `TechTreeNames` | Long tech names fit the tree |
+| `NewGameTypedValues` | Typed values on the new game screen |
+| `DSPAllPlanetInfo` | Interstellar Logistics window |
+| `GalacticScale` | Galactic Scale planet panel and new game screen |
+| `UXAssistStarmapFilter` | UXAssist starmap filter on top |
+| `PlanetFinderButtons` | PlanetFinder resource filter buttons |
+| `MultifunctionInventoryButton` | Multifunction inventory button |
+| `LaserClearingButton` | LaserClearing toggle button |
+| `BigInventoryWindowsFit` | DSPBigInventory windows fit the screen |
+| `UniverseGenTweaksRows` | UniverseGenTweaks setting rows |
+| `MechaDronesTweaksSpeed` | MechaDronesTweaks drone speed display |
+
+Section `DSPAllPlanetInfo`:
 
 - `WindowHeight` (default 600, 150-1400)
 - `WindowCollapsed`, `WindowPositionSaved`, `WindowX`, `WindowY`: written by the window itself. Set `WindowPositionSaved` to `false` to bring the window back to the middle of the screen.
