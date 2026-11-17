@@ -46,6 +46,7 @@ namespace BUG_UIFix
             Run("Replicator", () => ReplicatorCountFix.Apply(harmony));
             Run("Tech tree names", () => TechTitleFix.Apply(harmony));
             Run("Tip names", () => TipTitleFix.Apply(harmony));
+            Run("Window order", () => WindowOrderFix.Apply(harmony));
         }
 
         private static void Run(string mod, Func<string> apply)

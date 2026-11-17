@@ -6,6 +6,7 @@
 - Replicator: the count no longer stops at ">999"; it shows the real most, up to 99999 batches, the number the MAX buttons of DSPReplicatorPlus now add (with BUG_ModsPatch 1.0.3).
 - Replicator: each input in the recipe tree shows how many the inventory holds, under its icon; red when it is less than one batch.
 - Item and recipe tips: a name too long for its line gets a smaller font instead of running over the line below.
+- Clicked buildings: their window stays in front of the inventory that opens with it; the inventory used to cover it.
 
 ## 1.1.4
 
