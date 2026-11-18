@@ -15,8 +15,8 @@ namespace BUG_UIFix
             return "craftable count shows items, not batches";
         }
 
-        static readonly AccessTools.FieldRef<UIReplicatorWindow, RecipeProto> Selected = AccessTools.FieldRefAccess<UIReplicatorWindow, RecipeProto>("selectedRecipe");
-        static readonly AccessTools.FieldRef<UIReplicatorWindow, MechaForge> Forge = AccessTools.FieldRefAccess<UIReplicatorWindow, MechaForge>("mechaForge");
+        internal static readonly AccessTools.FieldRef<UIReplicatorWindow, RecipeProto> Selected = AccessTools.FieldRefAccess<UIReplicatorWindow, RecipeProto>("selectedRecipe");
+        internal static readonly AccessTools.FieldRef<UIReplicatorWindow, MechaForge> Forge = AccessTools.FieldRefAccess<UIReplicatorWindow, MechaForge>("mechaForge");
 
         // The game writes the text every update, so scaling it here never scales twice.
         static void Postfix(UIReplicatorWindow __instance)

@@ -4,15 +4,15 @@ using BepInEx.Logging;
 using HarmonyLib;
 using System.Reflection;
 
-[assembly: AssemblyVersion("1.1.8.0")]
-[assembly: AssemblyFileVersion("1.1.8.0")]
+[assembly: AssemblyVersion("1.1.9.0")]
+[assembly: AssemblyFileVersion("1.1.9.0")]
 [assembly: AssemblyTitle("BUG_UIFix")]
 
 namespace BUG_UIFix
 {
     // UI fixes for other mods (and one in the game itself: the replicator count), applied with Harmony. Each fix runs only when its mod is loaded and does not already
     // contain the fix; a missing mod or a changed member only skips that fix (logged), the others still apply.
-    [BepInPlugin(Guid, "BUG_UIFix", "1.1.8")]
+    [BepInPlugin(Guid, "BUG_UIFix", "1.1.9")]
     [BepInDependency("bug.dsp.modspatch")]  // the logic half of several fixes here, and the BigInventory screen limit
     [BepInDependency(AllPlanetInfoFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(GalacticScaleFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
@@ -23,6 +23,7 @@ namespace BUG_UIFix
     [BepInDependency(BigInventoryFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(UniverseGenTweaksFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(MechaDronesTweaksFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency(ReplicatorPlusFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
     public class Plugin : BaseUnityPlugin
     {
         public const string Guid = "bug.dsp.uifix";
@@ -37,6 +38,7 @@ namespace BUG_UIFix
             ReplicatorCountFix.NoLimit = Fix("ReplicatorCountNoLimit", "Replicator: the count above the craft button shows the real most instead of stopping at >999 (BUG_ModsPatch's MAX buttons add this number either way).");
             ReplicatorCountFix.InventoryCounts = Fix("ReplicatorInventoryCounts", "Replicator: each input in the recipe tree shows how many of it you can get (inventory plus what chain production can make), under its icon; red below one batch.");
             if (ReplicatorCountFix.CountItems || ReplicatorCountFix.NoLimit || ReplicatorCountFix.InventoryCounts) Run("Replicator", () => ReplicatorCountFix.Apply(harmony));
+            if (ReplicatorCountFix.CountItems) Run("DSPReplicatorPlus", () => ReplicatorPlusFix.Apply(harmony));  // its buttons follow the count's unit
             if (Fix("WindowOrder", "A clicked building's window opens in front of the inventory that opens with it.")) Run("Window order", () => WindowOrderFix.Apply(harmony));
             if (Fix("TipNames", "Item and recipe tips: a name too long for its line gets a smaller font instead of running over the line below.")) Run("Tip names", () => TipTitleFix.Apply(harmony));
             if (Fix("TechTreeNames", "Tech tree: a name wider than the gap to the next node gets a smaller font.")) Run("Tech tree names", () => TechTitleFix.Apply(harmony));

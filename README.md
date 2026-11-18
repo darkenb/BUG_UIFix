@@ -74,6 +74,10 @@ UniverseGenTweaks adds four sliders to the new game screen. Together with Genesi
 
 The mecha window and the tech tree showed the game's drone speed, not the one MechaDronesTweaks sets (drones already flew at the modded speed). They now show the real speed.
 
+## DSPReplicatorPlus: amount buttons
+
+The 1 ... 500 buttons counted batches while the count above them shows items: with 224 shown for a recipe that makes 8 per batch (28 batches), 50 and 100 stayed off. For a recipe that makes several of one item a button now adds that many items, rounded up to whole batches (50 at 8 per batch adds 56), and is on when the count reaches it. MAX is unchanged. Off together with `ReplicatorCountItems`.
+
 ## Settings
 
 `BepInEx/config/bug.dsp.uifix.cfg`, also shown in Gale's and r2modman's config editor. The file is written the first time the game starts with this version.
@@ -82,7 +86,7 @@ Section `Fixes`: one switch per fix, all on by default. Turn one off to keep tha
 
 | Switch | Fix |
 |---|---|
-| `ReplicatorCountItems` | Replicator count in items for one-product recipes |
+| `ReplicatorCountItems` | Replicator count in items for one-product recipes; DSPReplicatorPlus 1 ... 500 buttons count items too |
 | `ReplicatorCountNoLimit` | Replicator count without the >999 limit |
 | `ReplicatorInventoryCounts` | Inventory counts under the recipe inputs |
 | `WindowOrder` | Building, replicator and mecha windows open in front of the inventory |

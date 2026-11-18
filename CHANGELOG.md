@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.9
+
+- DSPReplicatorPlus: for a recipe that makes several of one item, the 1 ... 500 buttons count items, as the count above them does; they counted batches, so with 224 shown (28 batches of 8) 50 and 100 stayed off. A button adds that many items rounded up to whole batches (50 at 8 per batch adds 56). Follows the ReplicatorCountItems switch.
+
 ## 1.1.8
 
 - Multifunction: the frame rate no longer drops while its Player panel is open. The inventory button looked up DSPBigInventory on every frame, which is slow when that mod is not a local build.
