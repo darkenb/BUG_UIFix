@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
@@ -17,18 +18,24 @@ namespace BUG_UIFix
         public static string Apply(Harmony harmony)
         {
             if (!Plugin.Loaded(Guid)) return "not loaded, nothing to do";
-            harmony.Patch(AccessTools.Method(typeof(UIPlanetDetail), "SetResCount"), postfix: new HarmonyMethod(typeof(GalacticScaleFix), nameof(SetResCount)) { priority = Priority.Last });
+            // Galactic Scale 2.80.9 sets resourcesTabHeight and the game's spacing in its own prefix, so the layout fix is skipped.
+            Type detail = Plugin.FindType("GalacticScale.PatchOnUIPlanetDetail");
+            MethodInfo gsLayout = detail == null ? null : AccessTools.Method(detail, "SetResCount");
+            bool gsLaysOut = gsLayout != null && gsLayout.GetParameters().Any(p => p.Name == "___resourcesTabHeight");
+            string panel = gsLaysOut ? "planet panel layout skipped (Galactic Scale already fixes it)" : "planet panel layout fixed";
+            if (!gsLaysOut)
+                harmony.Patch(AccessTools.Method(typeof(UIPlanetDetail), "SetResCount"), postfix: new HarmonyMethod(typeof(GalacticScaleFix), nameof(SetResCount)) { priority = Priority.Last });
             // First: before GS's own postfix adds the slider listener back, so setting the value does not regenerate.
             harmony.Patch(AccessTools.Method(typeof(UIGalaxySelect), "UpdateUIDisplay"), postfix: new HarmonyMethod(typeof(GalacticScaleFix), nameof(ShowRequestedStarCount)) { priority = Priority.First });
             // Our local Galactic Scale build already returns to the galaxy view itself.
-            if (Plugin.HasMember(Plugin.FindType("GalacticScale.Modeler"), "CancelPendingScans")) return "planet panel layout fixed";
+            if (Plugin.HasMember(Plugin.FindType("GalacticScale.Modeler"), "CancelPendingScans")) return panel;
             Type display = AccessTools.TypeByName("GalacticScale.SystemDisplay").ThrowIfMissing("GalacticScale.SystemDisplay");
             inGalaxySelect = AccessTools.Field(display, "inGalaxySelect").ThrowIfMissing("SystemDisplay.inGalaxySelect");
             showStarCount = AccessTools.Method(display, "ShowStarCount").ThrowIfMissing("SystemDisplay.ShowStarCount");
             Type select = AccessTools.TypeByName("GalacticScale.PatchOnUIGalaxySelect").ThrowIfMissing("GalacticScale.PatchOnUIGalaxySelect");
             harmony.Patch(AccessTools.Method(select, "SetStarmapGalaxy").ThrowIfMissing("PatchOnUIGalaxySelect.SetStarmapGalaxy"),
                 transpiler: new HarmonyMethod(typeof(GalacticScaleFix), nameof(AfterGalaxySet)));
-            return "planet panel layout fixed; a new galaxy preview shows the galaxy view";
+            return panel + "; a new galaxy preview shows the galaxy view";
         }
 
         // Changing a setting while a star system was open on the new game screen made a new galaxy but left the system's

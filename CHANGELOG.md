@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.11
+
+- Galactic Scale: 2.80.9 fixes the planet details panel layout itself. The panel fix now checks for that and is skipped when Galactic Scale already has it; it still applies to older Galactic Scale versions. The new game screen fixes are unchanged.
+
+## 1.1.10
+
+- Rebind Build Bar: the reset button above the build bar no longer covers the first slot's item count; it sits just left of the slots. Switch: `RebindBuildBarResetButton`.
+
 ## 1.1.9
 
 - DSPReplicatorPlus: for a recipe that makes several of one item, the 1 ... 500 buttons count items, as the count above them does; they counted batches, so with 224 shown (28 batches of 8) 50 and 100 stayed off. A button adds that many items rounded up to whole batches (50 at 8 per batch adds 56). Follows the ReplicatorCountItems switch.

@@ -1,6 +1,6 @@
 {
     "name": "BUG_UIFix",
-    "version_number": "1.1.9",
+    "version_number": "1.1.11",
     "website_url": "https://github.com/darkenb/BUG_UIFix",
     "description": "UI display fixes for the game (replicator counts, item tips, tech tree names) and for DSPAllPlanetInfo, Galactic Scale, UXAssist, PlanetFinder, Multifunction, LaserClearing, DSPBigInventory, UniverseGenTweaks and MechaDronesTweaks.",
     "dependencies": [

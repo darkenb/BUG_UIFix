@@ -34,7 +34,7 @@ Zoomed out, a long tech name ran into the name of the next node on its row (They
 
 ## Galactic Scale: planet details panel
 
-Galactic Scale makes room in the planet panel for its "Planetary Radius" row, but with the spacing of an older game version. The orbit group (Orbit Radius, Revolution Period ...) sat 16 units too high, so its divider line touched the last resource row and the texts were cramped. The panel now uses the game's current spacing plus the radius row. On game 0.10.35 the panel's background also shrank to a black strip above the planet name, because the game now re-applies a stored panel height that Galactic Scale never sets; the fix sets it too.
+Galactic Scale makes room in the planet panel for its "Planetary Radius" row, but with the spacing of an older game version. The orbit group (Orbit Radius, Revolution Period ...) sat 16 units too high, so its divider line touched the last resource row and the texts were cramped. The panel now uses the game's current spacing plus the radius row. On game 0.10.35 the panel's background also shrank to a black strip above the planet name, because the game now re-applies a stored panel height that Galactic Scale never sets; the fix sets it too. Galactic Scale 2.80.9 and later fix this themselves; the fix then skips itself.
 
 ## Galactic Scale: new game screen
 
@@ -78,6 +78,10 @@ The mecha window and the tech tree showed the game's drone speed, not the one Me
 
 The 1 ... 500 buttons counted batches while the count above them shows items: with 224 shown for a recipe that makes 8 per batch (28 batches), 50 and 100 stayed off. For a recipe that makes several of one item a button now adds that many items, rounded up to whole batches (50 at 8 per batch adds 56), and is on when the count reaches it. MAX is unchanged. Off together with `ReplicatorCountItems`.
 
+## Rebind Build Bar: reset button
+
+The reset button above the left end of the build bar covered the first slot's item count. It now sits just left of the slots.
+
 ## Settings
 
 `BepInEx/config/bug.dsp.uifix.cfg`, also shown in Gale's and r2modman's config editor. The file is written the first time the game starts with this version.
@@ -102,6 +106,7 @@ Section `Fixes`: one switch per fix, all on by default. Turn one off to keep tha
 | `BigInventoryWindowsFit` | DSPBigInventory windows fit the screen |
 | `UniverseGenTweaksRows` | UniverseGenTweaks setting rows |
 | `MechaDronesTweaksSpeed` | MechaDronesTweaks drone speed display |
+| `RebindBuildBarResetButton` | Rebind Build Bar reset button position |
 
 Section `DSPAllPlanetInfo`:
 
@@ -111,11 +116,11 @@ Section `DSPAllPlanetInfo`:
 ## Compatibility
 
 - Needs only BepInEx and BUG_ModsPatch. Install it next to any of these mods; fixes for mods you do not have are skipped.
-- Written against DSPAllPlanetInfo 1.1.14, Galactic Scale 2.80.8, UXAssist 1.6.3, PlanetFinder 1.3.2, Multifunction 4.0.8, LaserClearing 1.0.8, DSPBigInventory 1.0.8, UniverseGenTweaks 1.2.11 and MechaDronesTweaks 1.1.4. If a later version changes the parts a fix needs, or already contains the fix, that fix is skipped and the BepInEx log says so; the other fixes still apply.
+- Written against DSPAllPlanetInfo 1.1.14, Galactic Scale 2.80.9, UXAssist 1.6.3, PlanetFinder 1.3.2, Multifunction 4.0.8, LaserClearing 1.0.8, DSPBigInventory 1.0.8, UniverseGenTweaks 1.2.11, MechaDronesTweaks 1.1.4 and Rebind Build Bar 1.0.7. If a later version changes the parts a fix needs, or already contains the fix, that fix is skipped and the BepInEx log says so; the other fixes still apply.
 
 ## Licences
 
-BUG_UIFix is MIT licensed. It contains no code, DLLs, images or other files of the mods it fixes; every fix is a Harmony patch that runs while the game runs. The fixed mods stay under their own terms: UXAssist, UniverseGenTweaks and MechaDronesTweaks (Soar Qin), LaserClearing (starfi5h): MIT; PlanetFinder (hetima): Unlicense; Galactic Scale: CC0; Multifunction (blacksnipebiu), DSPAllPlanetInfo and DSPBigInventory (appuns): no licence published, only patched at runtime. These fixes are not made or endorsed by the authors of those mods.
+BUG_UIFix is MIT licensed. It contains no code, DLLs, images or other files of the mods it fixes; every fix is a Harmony patch that runs while the game runs. The fixed mods stay under their own terms: UXAssist, UniverseGenTweaks and MechaDronesTweaks (Soar Qin), LaserClearing (starfi5h): MIT; PlanetFinder (hetima): Unlicense; Galactic Scale: CC0; Multifunction (blacksnipebiu), DSPAllPlanetInfo and DSPBigInventory (appuns), Rebind Build Bar (kremnev8): no licence published, only patched at runtime. These fixes are not made or endorsed by the authors of those mods.
 
 ## Building from source
 

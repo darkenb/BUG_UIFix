@@ -4,15 +4,15 @@ using BepInEx.Logging;
 using HarmonyLib;
 using System.Reflection;
 
-[assembly: AssemblyVersion("1.1.9.0")]
-[assembly: AssemblyFileVersion("1.1.9.0")]
+[assembly: AssemblyVersion("1.1.11.0")]
+[assembly: AssemblyFileVersion("1.1.11.0")]
 [assembly: AssemblyTitle("BUG_UIFix")]
 
 namespace BUG_UIFix
 {
     // UI fixes for other mods (and one in the game itself: the replicator count), applied with Harmony. Each fix runs only when its mod is loaded and does not already
     // contain the fix; a missing mod or a changed member only skips that fix (logged), the others still apply.
-    [BepInPlugin(Guid, "BUG_UIFix", "1.1.9")]
+    [BepInPlugin(Guid, "BUG_UIFix", "1.1.11")]
     [BepInDependency("bug.dsp.modspatch")]  // the logic half of several fixes here, and the BigInventory screen limit
     [BepInDependency(AllPlanetInfoFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(GalacticScaleFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
@@ -24,6 +24,7 @@ namespace BUG_UIFix
     [BepInDependency(UniverseGenTweaksFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(MechaDronesTweaksFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(ReplicatorPlusFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency(RebindBuildBarFix.Guid, BepInDependency.DependencyFlags.SoftDependency)]
     public class Plugin : BaseUnityPlugin
     {
         public const string Guid = "bug.dsp.uifix";
@@ -55,6 +56,7 @@ namespace BUG_UIFix
             if (Fix("LaserClearingButton", "LaserClearing: the toggle button keeps its tooltip and colour after the UI is rebuilt.")) Run("LaserClearing", () => LaserClearingFix.Apply(harmony));
             if (Fix("BigInventoryWindowsFit", "DSPBigInventory: inventory, assembler and miner windows are scaled to fit the screen.")) Run("DSPBigInventory", () => BigInventoryFix.Apply(harmony));
             if (Fix("UniverseGenTweaksRows", "UniverseGenTweaks: new game setting rows are stacked without overlapping.")) Run("UniverseGenTweaks", () => UniverseGenTweaksFix.Apply(harmony));
+            if (Fix("RebindBuildBarResetButton", "Rebind Build Bar: the reset button above the build bar no longer covers the first slot's item count.")) Run("Rebind Build Bar", () => RebindBuildBarFix.Apply(harmony));
             if (Fix("MechaDronesTweaksSpeed", "MechaDronesTweaks: the mecha window and tech tree show the modded drone speed.")) Run("MechaDronesTweaks", () => MechaDronesTweaksFix.Apply(harmony));
         }
 
